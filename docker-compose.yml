@@ -8,6 +8,8 @@ services:
     restart: always
     ports:
       - "3306:3306"
+    volumes:
+      - mysql-volume:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: sa-db
@@ -47,3 +49,5 @@ services:
 
 networks:
   spring-net:
+volumes:
+  mysql-volume:
