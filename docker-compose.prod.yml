@@ -1,0 +1,9 @@
+version: "3.8"
+
+services:
+  mysql-db:
+    ports: []  # Pas d'exposition en prod
+
+  spring-app:
+    ports:
+      - "80:8080"  # Exposition sur le port 80 en prod

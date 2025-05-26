@@ -1,47 +1,40 @@
 version: "3.8"
 
 services:
-  # Le service de base de données MySQL
   mysql-db:
     image: mysql:8
     container_name: mysql-db
     restart: always
-    ports:
-      - "3306:3306"
     volumes:
       - mysql-volume:/var/lib/mysql
     environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: sa-db
-      MYSQL_USER: ramsey
-      MYSQL_PASSWORD: ramsey
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     networks:
       - spring-net
-  # Le service de l'application Spring Boot
+
   spring-app:
     build: .
     container_name: spring-app
     restart: always
-    ports:
-      - "8080:8080"
     depends_on:
       - mysql-db
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-db:3306/sa-db
-      SPRING_DATASOURCE_USERNAME: ramsey
-      SPRING_DATASOURCE_PASSWORD: ramsey
+      SPRING_DATASOURCE_URL: ${SPRING_DATASOURCE_URL}
+      SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME}
+      SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
     networks:
       - spring-net
-  # Le service phpmyadmin
+
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     container_name: phpmyadmin
     restart: always
-    ports:
-      - "8081:80"
     environment:
-      PMA_HOST: mysql-db
-      MYSQL_ROOT_PASSWORD: root
+      PMA_HOST: ${PMA_HOST}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
     depends_on:
       - mysql-db
     networks:
@@ -49,5 +42,6 @@ services:
 
 networks:
   spring-net:
+
 volumes:
   mysql-volume:
